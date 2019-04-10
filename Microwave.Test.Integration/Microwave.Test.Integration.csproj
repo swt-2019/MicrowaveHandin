@@ -59,6 +59,8 @@
   <ItemGroup>
     <Compile Include="Class1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UICookControllerIntegration\CookControllerUserInterfaceIntegration.cs" />
+    <Compile Include="UICookControllerIntegration\UICookControllerTest.cs" />
     <Compile Include="UIDoorIntegration\UserInterfaceDoorTest.cs" />
     <Compile Include="UI_LightAndDisplay\UIDisplay.cs" />
     <Compile Include="UI_LightAndDisplay\UILight.cs" />

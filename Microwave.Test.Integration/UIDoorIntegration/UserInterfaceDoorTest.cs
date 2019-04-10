@@ -39,11 +39,57 @@ namespace Microwave.Test.Integration
         }
 
         [Test]
-        public void UserInterface_ObservingDoor_()
+        public void UserInterface_ObservingDoor_LightOnWhenDoorOpen()
         {
             _doorToIntegrate.Open();
 
             _fakeLight.Received().TurnOn();
+        }
+
+
+
+        [Test]
+        public void UserInterface_ObservingDoor_PowerDisplayClearWhenDoorOpen()
+        {
+            _fakePowerButton.Pressed += Raise.Event();
+
+            _doorToIntegrate.Open();
+
+            _fakeDisplay.Received().Clear();
+        }
+
+        [Test]
+        public void UserInterface_ObservingDoor_TimeDisplayClearWhenDoorOpen()
+        {
+            _fakePowerButton.Pressed += Raise.Event();
+            _fakeTimeButton.Pressed += Raise.Event();
+
+            _doorToIntegrate.Open();
+
+            _fakeDisplay.Received().Clear();
+        }
+
+
+        [Test]
+        public void UserInterface_ObservingDoor_CookingStoppedWhenDoorOpen()
+        {
+            _fakePowerButton.Pressed += Raise.Event();
+            _fakeTimeButton.Pressed += Raise.Event();
+            _fakeStartCancelButton.Pressed += Raise.Event();
+
+            _doorToIntegrate.Open();
+
+            _fakeCookController.Received().Stop();
+        }
+
+        [Test]
+        public void UserInterface_ObservingDoor_LightOffWhenDoorClosed()
+        {
+            _doorToIntegrate.Open();
+
+            _doorToIntegrate.Close();
+
+            _fakeLight.Received().TurnOff();
         }
     }
 }
