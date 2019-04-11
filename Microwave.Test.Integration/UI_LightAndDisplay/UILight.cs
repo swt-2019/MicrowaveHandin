@@ -38,7 +38,7 @@ namespace Microwave.Test.Integration.UI_LightAndDisplay
             door = new Door();
 
 
-            output = new Output();
+            output = Substitute.For<IOutput>();
 
             light = new Light(output);
 
@@ -64,10 +64,24 @@ namespace Microwave.Test.Integration.UI_LightAndDisplay
         [Test]
         public void Ready_DoorOpen_LightOn()
         {
-            // This test that uut has subscribed to door opened, and works correctly
-            // simulating the event through NSubstitute
-            door.Opened += Raise.EventWith(this, EventArgs.Empty);
-            //Assert.That(() => uut.);
+            door.Open();
+            output.Received().OutputLine(Arg.Is("Light is turned on"));
+        }
+
+
+        [Test]
+        public void Cooking_CookingIsDone_LightOff()
+        {
+            powerButton.Press();
+            // Now in SetPower
+            timeButton.Press();
+            // Now in SetTime
+            startCancelButton.Press();
+            // Now in cooking
+
+            uut.CookingIsDone();/*
+            display.ShowTime(10,20);*/
+            output.Received().OutputLine(Arg.Is("Light is turned off"));
         }
 
 
