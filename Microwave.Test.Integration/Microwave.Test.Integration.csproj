@@ -63,8 +63,8 @@
     <Compile Include="UICookControllerIntegration\CookControllerUserInterfaceIntegration.cs" />
     <Compile Include="UICookControllerIntegration\UICookControllerTest.cs" />
     <Compile Include="UIDoorIntegration\UserInterfaceDoorTest.cs" />
-    <Compile Include="UI_LightAndDisplay\UIDisplay.cs" />
-    <Compile Include="UI_LightAndDisplay\UILight.cs" />
+    <Compile Include="UI_LightAndDisplay\ButtonDisplay.cs" />
+    <Compile Include="UI_LightAndDisplay\ButtonLight.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MicrowaveOvenClasses\MicrowaveOvenClasses.csproj">

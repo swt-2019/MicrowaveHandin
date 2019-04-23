@@ -10,14 +10,14 @@ using NUnit.Framework;
 
 namespace Microwave.Test.Integration.UI_LightAndDisplay
 {
-    public class UILight
+    public class ButtonLight
     {
         //Setup and creation of fakes: stubs or mocks
         private UserInterface uut;
 
-        private IButton powerButton;
-        private IButton timeButton;
-        private IButton startCancelButton;
+        private IButton powerButtonTop;
+        private IButton timeButtonTop;
+        private IButton startCancelButtonTop;
 
         private IDoor door;
 
@@ -32,9 +32,9 @@ namespace Microwave.Test.Integration.UI_LightAndDisplay
         public void SetUp()
         {
 
-            powerButton = new Button();
-            timeButton = new Button();
-            startCancelButton = new Button();
+            powerButtonTop = new Button();
+            timeButtonTop = new Button();
+            startCancelButtonTop = new Button();
             door = new Door();
 
 
@@ -42,19 +42,19 @@ namespace Microwave.Test.Integration.UI_LightAndDisplay
 
             light = new Light(output);
 
-            display = Substitute.For<IDisplay>();
+            display = new Display(output);
             cooker = Substitute.For<ICookController>();
 
             uut = new UserInterface(
-                powerButton, timeButton, startCancelButton,
+                powerButtonTop, timeButtonTop, startCancelButtonTop,
                 door,
                 display,
                 light,
                 cooker);
 
-            powerButton.Pressed += new EventHandler(uut.OnPowerPressed);
-            timeButton.Pressed += new EventHandler(uut.OnTimePressed);
-            startCancelButton.Pressed += new EventHandler(uut.OnStartCancelPressed);
+            powerButtonTop.Pressed += new EventHandler(uut.OnPowerPressed);
+            timeButtonTop.Pressed += new EventHandler(uut.OnTimePressed);
+            startCancelButtonTop.Pressed += new EventHandler(uut.OnStartCancelPressed);
 
             door.Closed += new EventHandler(uut.OnDoorClosed);
             door.Opened += new EventHandler(uut.OnDoorOpened);
@@ -65,7 +65,7 @@ namespace Microwave.Test.Integration.UI_LightAndDisplay
         public void Ready_DoorOpen_LightOn()
         {
             door.Open();
-            output.Received().OutputLine(Arg.Is("Light is turned on"));
+            output.Received().OutputLine(Arg.Is<string>(str => str.Contains("on")));
         }
 
         [Test]
@@ -73,39 +73,40 @@ namespace Microwave.Test.Integration.UI_LightAndDisplay
         {
             door.Open();
             door.Close();
-            output.Received().OutputLine(Arg.Is("Light is turned off"));
+            output.Received().OutputLine(Arg.Is<string>(str => str.Contains("off")));
         }
 
         [Test]
         public void Cooking_CookingIsDone_LightOff()
         {
-            powerButton.Press();
+            powerButtonTop.Press();
             // Now in SetPower
-            timeButton.Press();
+            timeButtonTop.Press();
             // Now in SetTime
-            startCancelButton.Press();
+            startCancelButtonTop.Press();
             // Now in cooking
 
             uut.CookingIsDone();
 
-            output.Received().OutputLine(Arg.Is("Light is turned off"));
+            output.Received().OutputLine(Arg.Is<string>(str => str.Contains("off")));
         }
 
         [Test]
         public void Cooking_CancelButton_CookerCalled()
         {
-            powerButton.Press();
+            powerButtonTop.Press();
             // Now in SetPower
-            timeButton.Press();
+            timeButtonTop.Press();
             // Now in SetTime
-            startCancelButton.Press();
+            startCancelButtonTop.Press();
             // Now in cooking
 
             // Open door
-            startCancelButton.Press();
+            startCancelButtonTop.Press();
 
-            output.Received().OutputLine(Arg.Is("Light is turned off"));
+            output.Received().OutputLine(Arg.Is<string>(str => str.Contains("off")));
         }
+
 
 
     }
