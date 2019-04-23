@@ -68,6 +68,13 @@ namespace Microwave.Test.Integration.UI_LightAndDisplay
             output.Received().OutputLine(Arg.Is("Light is turned on"));
         }
 
+        [Test]
+        public void Ready_DoorClose_LightOff()
+        {
+            door.Open();
+            door.Close();
+            output.Received().OutputLine(Arg.Is("Light is turned off"));
+        }
 
         [Test]
         public void Cooking_CookingIsDone_LightOff()
