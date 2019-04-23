@@ -10,14 +10,14 @@ namespace Microwave.Test.Integration.UICookControllerIntegration
     public class CookControllerUserInterfaceIntegration
     {
 
-        private IUserInterface _userInterfaceToIntegrate;
+        private UserInterface _userInterfaceToIntegrate;
         private IDoor _door;
         private IButton _powerButton;
         private IButton _timeButton;
         private IButton _startCancelButton;
         private IDisplay _display;
         private ILight _light;
-        private ICookController _topCookController;
+        private CookController _topCookController;
         private IOutput _fakeOutput;
         private ITimer _fakeTimer;
         private IPowerTube _fakePowerTube;
@@ -34,6 +34,10 @@ namespace Microwave.Test.Integration.UICookControllerIntegration
             _door = new Door();
             _light = new Light(_fakeOutput);
             _display = new Display(_fakeOutput);
+            _topCookController = new CookController(
+                _fakeTimer,
+                _display,
+                _fakePowerTube);
             _userInterfaceToIntegrate = new UserInterface(
                 _powerButton,
                 _timeButton,
@@ -42,11 +46,7 @@ namespace Microwave.Test.Integration.UICookControllerIntegration
                 _display,
                 _light,
                 _topCookController);
-            _topCookController = new CookController(
-                _fakeTimer,
-                _display,
-                _fakePowerTube,
-                _userInterfaceToIntegrate);
+            _topCookController.UI = _userInterfaceToIntegrate;
         }
 
         [Test]
@@ -58,17 +58,19 @@ namespace Microwave.Test.Integration.UICookControllerIntegration
 
             _fakeTimer.Expired += Raise.Event();
 
-            _fakeOutput.Received().OutputLine(Arg.Any<string>());
+            _fakeOutput.Received().OutputLine(Arg.Is<string>(str => str.Contains("cleared")));
         }
 
         [Test]
         public void CookController_TimeExpired_LightOff()
         {
-            _topCookController.StartCooking(50, 100);
+            _powerButton.Press();
+            _timeButton.Press();
+            _startCancelButton.Press();
 
             _fakeTimer.Expired += Raise.Event();
 
-            _light.Received().TurnOff();
+            _fakeOutput.Received().OutputLine(Arg.Is<string>(str => str.Contains("turned off")));
         }
     }
 }
