@@ -79,8 +79,24 @@ namespace Microwave.Test.Integration.UI_LightAndDisplay
             startCancelButton.Press();
             // Now in cooking
 
-            uut.CookingIsDone();/*
-            display.ShowTime(10,20);*/
+            uut.CookingIsDone();
+
+            output.Received().OutputLine(Arg.Is("Light is turned off"));
+        }
+
+        [Test]
+        public void Cooking_CancelButton_CookerCalled()
+        {
+            powerButton.Press();
+            // Now in SetPower
+            timeButton.Press();
+            // Now in SetTime
+            startCancelButton.Press();
+            // Now in cooking
+
+            // Open door
+            startCancelButton.Press();
+
             output.Received().OutputLine(Arg.Is("Light is turned off"));
         }
 
