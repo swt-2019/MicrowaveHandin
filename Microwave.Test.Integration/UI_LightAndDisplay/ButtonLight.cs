@@ -13,7 +13,7 @@ namespace Microwave.Test.Integration.UI_LightAndDisplay
     public class ButtonLight
     {
         //Setup and creation of fakes: stubs or mocks
-        private UserInterface uut;
+        private UserInterface userInterface;
 
         private IButton powerButtonTop;
         private IButton timeButtonTop;
@@ -45,19 +45,19 @@ namespace Microwave.Test.Integration.UI_LightAndDisplay
             display = new Display(output);
             cooker = Substitute.For<ICookController>();
 
-            uut = new UserInterface(
+            userInterface = new UserInterface(
                 powerButtonTop, timeButtonTop, startCancelButtonTop,
                 door,
                 display,
                 light,
                 cooker);
 
-            powerButtonTop.Pressed += new EventHandler(uut.OnPowerPressed);
-            timeButtonTop.Pressed += new EventHandler(uut.OnTimePressed);
-            startCancelButtonTop.Pressed += new EventHandler(uut.OnStartCancelPressed);
+            powerButtonTop.Pressed += new EventHandler(userInterface.OnPowerPressed);
+            timeButtonTop.Pressed += new EventHandler(userInterface.OnTimePressed);
+            startCancelButtonTop.Pressed += new EventHandler(userInterface.OnStartCancelPressed);
 
-            door.Closed += new EventHandler(uut.OnDoorClosed);
-            door.Opened += new EventHandler(uut.OnDoorOpened);
+            door.Closed += new EventHandler(userInterface.OnDoorClosed);
+            door.Opened += new EventHandler(userInterface.OnDoorOpened);
 
         }
 
@@ -86,7 +86,7 @@ namespace Microwave.Test.Integration.UI_LightAndDisplay
             startCancelButtonTop.Press();
             // Now in cooking
 
-            uut.CookingIsDone();
+            userInterface.CookingIsDone();
 
             output.Received().OutputLine(Arg.Is<string>(str => str.Contains("off")));
         }
