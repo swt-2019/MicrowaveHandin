@@ -48,30 +48,61 @@ namespace Microwave.Test.Integration.UICookControllerIntegration
                 _cookControllerToIntegrate);
         }
 
-        [Test]
-        public void UI_CookControllerStarted_TimerReceivedCorrectTime()
+        [TestCase(2)]
+        [TestCase(5)]
+        [TestCase(10)]
+        public void UI_CookControllerStarted_TimerReceivedCorrectTime(int timeButtonPressed)
         {
             _powerButton.Press();
-            _timeButton.Press();
+            for (int i = 0; i < timeButtonPressed; i++)
+            {
+                _timeButton.Press();
+            }
+
+            _startCancelButton.Press();
+
+            _fakeTimer.Received().Start(Arg.Is(60*timeButtonPressed));
+        }
+
+        [TestCase(2)]
+        [TestCase(5)]
+        [TestCase(10)]
+        public void UI_CookControllerStarted_PowerTubeReceivedCorrectValue(int powerButtonPressed)
+        {
+            for (int i = 0; i < powerButtonPressed; i++)
+            {
+                _powerButton.Press();
+            }
             _timeButton.Press();
 
             _startCancelButton.Press();
 
-            _fakeTimer.Received().Start(Arg.Is(120));
+            _fakePowerTube.Received().TurnOn(Arg.Is(powerButtonPressed*50));
         }
 
         [Test]
-        public void UI_CookControllerStarted_PowerTubeReceivedCorrectValue()
+        public void UI_DoorOpened_CookControllerStopped()
         {
-            _powerButton.Press();
-            _powerButton.Press();
+            _powerButton.Press();   
             _timeButton.Press();
-
             _startCancelButton.Press();
 
-            _fakePowerTube.Received().TurnOn(Arg.Is(100));
+            _door.Open();
+
+            _fakePowerTube.Received().TurnOff();
         }
 
 
+        [Test]
+        public void UI_CancelPressed_CookControllerStopped()
+        {
+            _powerButton.Press();
+            _timeButton.Press();
+            _startCancelButton.Press();
+
+            _startCancelButton.Press();
+
+            _fakePowerTube.Received().TurnOff();
+        }
     }
 }
