@@ -69,10 +69,29 @@ namespace Microwave.Test.Integration.UI_LightAndDisplay
         }
 
         [Test]
+        public void Ready_DoorOpenDoorOpen_LightOn()
+        {
+            door.Open();
+            door.Open();
+            output.Received().OutputLine(Arg.Is<string>(str => str.Contains("on")));
+        }
+
+        [Test]
         public void Ready_DoorClose_LightOff()
         {
             door.Open();
             door.Close();
+            output.Received().OutputLine(Arg.Is<string>(str => str.Contains("off")));
+        }
+
+        [Test]
+        public void Ready_DoorMultipleOpenClose_LightOff()
+        {
+            for (int i = 0; i < 100; i++)
+            {
+                door.Open();
+                door.Close();
+            }
             output.Received().OutputLine(Arg.Is<string>(str => str.Contains("off")));
         }
 
@@ -106,8 +125,6 @@ namespace Microwave.Test.Integration.UI_LightAndDisplay
 
             output.Received().OutputLine(Arg.Is<string>(str => str.Contains("off")));
         }
-
-
 
     }
 }
