@@ -9,14 +9,14 @@ namespace Microwave.Test.Integration.UICookControllerIntegration
     [TestFixture]
     public class UICookControllerTest
     {
-        private IUserInterface _topUserInterface;
+        private UserInterface _topUserInterface;
         private IDoor _door;
         private IButton _powerButton;
         private IButton _timeButton;
         private IButton _startCancelButton;
         private IDisplay _display;
         private ILight _light;
-        private ICookController _cookControllerToIntegrate;
+        private CookController _cookControllerToIntegrate;
         private IOutput _fakeOutput;
         private ITimer _fakeTimer;
         private IPowerTube _fakePowerTube;
@@ -36,8 +36,7 @@ namespace Microwave.Test.Integration.UICookControllerIntegration
             _cookControllerToIntegrate = new CookController(
                 _fakeTimer,
                 _display,
-                _fakePowerTube,
-                _topUserInterface);
+                _fakePowerTube);
             _topUserInterface = new UserInterface(
                 _powerButton,
                 _timeButton,
@@ -46,6 +45,7 @@ namespace Microwave.Test.Integration.UICookControllerIntegration
                 _display,
                 _light,
                 _cookControllerToIntegrate);
+            _cookControllerToIntegrate.UI = _topUserInterface;
         }
 
         [TestCase(2)]

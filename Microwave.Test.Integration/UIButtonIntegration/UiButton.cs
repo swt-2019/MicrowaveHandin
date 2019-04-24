@@ -133,6 +133,7 @@ namespace Microwave.Test.Integration.UIButtonIntegration
             _startCancelButton.Press();
             _light.Received().TurnOff();
         }
+
         [Test]
         public void ui_btn_StartCancelBtnTimeState()
         {
