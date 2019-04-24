@@ -61,7 +61,7 @@ namespace Microwave.Test.Integration.UICookControllerIntegration
 
             _startCancelButton.Press();
 
-            _fakeTimer.Received().Start(Arg.Is(60*timeButtonPressed));
+            _fakeTimer.Received().Start(Arg.Is(timeButtonPressed));
         }
 
         [TestCase(2)]

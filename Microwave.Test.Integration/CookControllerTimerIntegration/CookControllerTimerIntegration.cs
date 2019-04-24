@@ -60,7 +60,7 @@ namespace Microwave.Test.Integration
             _timeButton.Press();
             _startCancelButton.Press();
             
-            Assert.AreEqual(60,_timerToIntegrate.TimeRemaining);
+            Assert.AreEqual(1000,_timerToIntegrate.TimeRemaining);
         }
         
     }

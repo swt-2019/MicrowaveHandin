@@ -6,6 +6,7 @@ namespace MicrowaveOvenClasses.Boundary
     public class Timer : ITimer
     {
         public int TimeRemaining { get; private set; }
+        public int TimerInterval { get; set; } = 1000;
 
         public event EventHandler Expired;
         public event EventHandler TimerTick;
@@ -17,14 +18,17 @@ namespace MicrowaveOvenClasses.Boundary
             timer = new System.Timers.Timer();
             // Bind OnTimerEvent with an object of this, and set up the event
             timer.Elapsed += new System.Timers.ElapsedEventHandler(OnTimerEvent);
-            timer.Interval = 1000; // 1 second intervals
+            timer.Interval = TimerInterval; // 1 second intervals
             timer.AutoReset = true;  // Repeatable timer
         }
 
-
+        /// <summary>
+        /// Starts the timer which ticks with the given <see cref="TimerInterval"/>
+        /// </summary>
+        /// <param name="time">The time before expiration, specified in seconds</param>
         public void Start(int time)
         {
-            TimeRemaining = time;
+            TimeRemaining = time*TimerInterval;
             timer.Enabled = true;
         }
 
