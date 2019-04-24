@@ -39,7 +39,8 @@ namespace MicrowaveOvenClasses.Controllers
 
         public void StartCooking(int power, int time)
         {
-            myPowerTube.TurnOn(power);
+            int pctPower = 100 - (((700 - power) / 700) * 100);
+            myPowerTube.TurnOn(pctPower);
             myTimer.Start(time);
             isCooking = true;
         }
