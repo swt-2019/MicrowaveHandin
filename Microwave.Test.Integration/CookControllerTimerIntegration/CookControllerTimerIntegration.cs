@@ -1,8 +1,11 @@
+using System;
+using System.Threading;
 using MicrowaveOvenClasses.Boundary;
 using MicrowaveOvenClasses.Controllers;
 using MicrowaveOvenClasses.Interfaces;
 using NSubstitute;
 using NUnit.Framework;
+using Timer = MicrowaveOvenClasses.Boundary.Timer;
 
 namespace Microwave.Test.Integration
 {
@@ -51,10 +54,10 @@ namespace Microwave.Test.Integration
                 _topCookController);
             _topCookController.UI = _userInterface;
         }
-
+        
 
         [Test]
-        public void CookController_TimerStart_TimerCorrect()
+        public void CookController_Timer_DefaultTimeIs60Seconds()
         {
             _powerButton.Press();
             _timeButton.Press();
@@ -62,6 +65,54 @@ namespace Microwave.Test.Integration
             
             Assert.AreEqual(60000,_timerToIntegrate.TimeRemaining);
         }
+        
+        [Test]
+        public void CookController_Timer_TimeoutDefaultTime()
+        {
+            var isDone = false;
+            _timerToIntegrate.Expired += (sender, args) => isDone = true;
+            
+            _powerButton.Press();
+            _timeButton.Press();
+            _startCancelButton.Press();
+            
+            Thread.Sleep(60050);
+            
+            Assert.IsTrue(isDone);
+            
+        }
+
+        [TestCase(2)]
+        [TestCase(5)]
+        public void CookController_Timer_TimeOutCustomTimerDone(int customTime)
+        {
+            var isDone = false;
+            _timerToIntegrate.Expired += (sender, args) => isDone = true;
+            
+            _topCookController.StartCooking(10,customTime);
+            
+            Thread.Sleep((customTime * 1000) + 10);
+            
+            Assert.IsTrue(isDone);
+              
+        }
+        
+        
+        [TestCase(2)]
+        [TestCase(5)]
+        public void CookController_Timer_TimeOutCustomTimerNotDone(int customTime)
+        {
+            var isDone = false;
+            _timerToIntegrate.Expired += (sender, args) => isDone = true;
+            
+            _topCookController.StartCooking(10,customTime);
+            
+            Thread.Sleep((customTime * 1000) - 10);
+            
+            Assert.IsFalse(isDone);
+              
+        }
+        
         
     }
 }
