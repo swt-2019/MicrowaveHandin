@@ -62,13 +62,6 @@ namespace Microwave.Test.Integration.UI_LightAndDisplay
         }
 
         [Test]
-        public void DisplayStartCookingClearDisplay()
-        {
-            display.Clear();
-            output.Received().OutputLine(Arg.Is<string>(str => str.Contains("cleared")));
-        }
-
-        [Test]
         public void DisplayPowerButtonPress()
         {
             powerButtonTop.Press();
@@ -76,7 +69,7 @@ namespace Microwave.Test.Integration.UI_LightAndDisplay
         }
 
         [Test]
-        public void DisplayTimeButtonPress()
+        public void DisplayTimeButtonPress_DefaultOneMinute()
         {
             powerButtonTop.Press();
             timeButtonTop.Press();
@@ -92,11 +85,6 @@ namespace Microwave.Test.Integration.UI_LightAndDisplay
             output.Received().OutputLine(Arg.Is<string>(str => str.Contains("100 W")));
         }
 
-        [Test]
-        public void Something()
-        {
-            
-        }
 
     }
 }

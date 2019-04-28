@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-
+using System.Threading;
 using MicrowaveOvenClasses.Boundary;
 using MicrowaveOvenClasses.Controllers;
 using MicrowaveOvenClasses.Interfaces;
@@ -69,14 +69,6 @@ namespace Microwave.Test.Integration.UI_LightAndDisplay
         }
 
         [Test]
-        public void Ready_DoorOpenDoorOpen_LightOn()
-        {
-            door.Open();
-            door.Open();
-            output.Received().OutputLine(Arg.Is<string>(str => str.Contains("on")));
-        }
-
-        [Test]
         public void Ready_DoorClose_LightOff()
         {
             door.Open();
@@ -94,18 +86,21 @@ namespace Microwave.Test.Integration.UI_LightAndDisplay
             }
             output.Received().OutputLine(Arg.Is<string>(str => str.Contains("off")));
         }
-
+        
         [Test]
-        public void Cooking_CookingIsDone_LightOff()
+        public void Cooking_MultipleCookingIsDone_LightOff()
         {
-            powerButtonTop.Press();
-            // Now in SetPower
-            timeButtonTop.Press();
-            // Now in SetTime
-            startCancelButtonTop.Press();
-            // Now in cooking
+            for (int i = 0; i < 100; i++)
+            {
+                powerButtonTop.Press();
+                // Now in SetPower
+                timeButtonTop.Press();
+                // Now in SetTime
+                startCancelButtonTop.Press();
+                // Now in cooking
 
-            userInterface.CookingIsDone();
+                userInterface.CookingIsDone();
+            }
 
             output.Received().OutputLine(Arg.Is<string>(str => str.Contains("off")));
         }
