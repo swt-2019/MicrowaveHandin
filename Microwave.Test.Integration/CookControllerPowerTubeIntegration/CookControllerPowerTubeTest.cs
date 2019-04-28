@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Threading;
 using MicrowaveOvenClasses.Boundary;
 using MicrowaveOvenClasses.Controllers;
 using MicrowaveOvenClasses.Interfaces;
 using NSubstitute;
 using NUnit.Framework;
+using Timer = MicrowaveOvenClasses.Boundary.Timer;
 
 namespace Microwave.Test.Integration.CookControllerPowerTubeIntegration
 {
@@ -53,6 +55,8 @@ namespace Microwave.Test.Integration.CookControllerPowerTubeIntegration
 
         [TestCase(1)]
         [TestCase(2)]
+        [TestCase(5)]
+        [TestCase(10)]
         public void CookController_CookControllerStarted_PowerTubeReceivedCorrectValue(int powerButtonPressed)
         {
             for (int i = 0; i < powerButtonPressed; i++)
@@ -61,13 +65,11 @@ namespace Microwave.Test.Integration.CookControllerPowerTubeIntegration
             }
             _timeButton.Press();
 
-            _startCancelButton.Press();
-
-            _fakeOutput.Received().OutputLine(Arg.Is<string>(str => str.Contains($"{powerButtonPressed * 50}")));
+            //Assert the PowerTube doesn't throw ArgumentException
+            Assert.DoesNotThrow(() =>_startCancelButton.Press());
         }
 
-        [TestCase(5)]
-        [TestCase(10)]
+        [Test]
         public void CookController_CookControllerStartedWithToHighPower_PowerTubeThrewException(int powerButtonPressed)
         {
             try
@@ -121,18 +123,29 @@ namespace Microwave.Test.Integration.CookControllerPowerTubeIntegration
 
 
         [Test]
-        public void CookController_TimerExpired_CookControllerStopped()
+        public void CookController_TimerExpired_PowerTubeStopped()
         {
-            bool timerExpired = false;
-            _timer.Expired += (sender, args) => timerExpired = true;
+            _powerButton.Press();
+            _timeButton.Press();
+
+            _startCancelButton.Press();
+            
+            Thread.Sleep(61000);
+
+            _fakeOutput.Received().OutputLine(Arg.Is<string>(str => str.Contains("PowerTube turned off")));
+        }
+
+        [Test]
+        public void CookController_TimerNotExpired_PowerTubeNotStopped()
+        {
             _powerButton.Press();
             _timeButton.Press();
 
             _startCancelButton.Press();
 
-            while(timerExpired != true) { }
+            Thread.Sleep(900);
 
-            _fakeOutput.Received().OutputLine(Arg.Is<string>(str => str.Contains("PowerTube turned off")));
+            _fakeOutput.DidNotReceive().OutputLine(Arg.Is<string>(str => str.Contains("PowerTube turned off")));
         }
 
 

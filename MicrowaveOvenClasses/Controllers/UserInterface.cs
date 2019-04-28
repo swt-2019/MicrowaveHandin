@@ -41,6 +41,7 @@ namespace MicrowaveOvenClasses.Controllers
             myDisplay = display;
         }
 
+
         public void OnPowerPressed(object sender, EventArgs e)
         {
             switch (myState)
@@ -50,7 +51,8 @@ namespace MicrowaveOvenClasses.Controllers
                     myState = States.SETPOWER;
                     break;
                 case States.SETPOWER:
-                    powerLevel = (powerLevel >= 700 ? 50 : powerLevel+50);
+                    powerLevel += 50;
+                    powerLevel = powerLevel > 700 ? 50 : powerLevel;
                     myDisplay.ShowPower(powerLevel);
                     break;
             }
@@ -85,7 +87,7 @@ namespace MicrowaveOvenClasses.Controllers
                 case States.SETTIME:
                     myDisplay.Clear();
                     myLight.TurnOn();
-                    myCooker.StartCooking(powerLevel, time);
+                    myCooker.StartCooking(powerLevel, time*60);
                     myState = States.COOKING;
                     break;
                 case States.COOKING:

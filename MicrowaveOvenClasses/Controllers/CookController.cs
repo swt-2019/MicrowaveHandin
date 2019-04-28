@@ -39,7 +39,8 @@ namespace MicrowaveOvenClasses.Controllers
 
         public void StartCooking(int power, int time)
         {
-            myPowerTube.TurnOn(power);
+            int pctPower = 100 - (((700 - power) / 700) * 100);
+            myPowerTube.TurnOn(pctPower);
             myTimer.Start(time);
             isCooking = true;
         }
@@ -61,10 +62,11 @@ namespace MicrowaveOvenClasses.Controllers
             }
         }
 
+        //Accounted for TimeRemaining in milliseconds
         public void OnTimerTick(object sender, EventArgs e)
         {
             int remaining = myTimer.TimeRemaining;
-            myDisplay.ShowTime(remaining/60, remaining % 60);
+            myDisplay.ShowTime(remaining/60000, (remaining/1000) % 60);
         }
     }
 }

@@ -8,7 +8,8 @@ using MicrowaveOvenClasses.Controllers;
 
 namespace Microwave.Application
 {
-    class Program
+    class 
+        Program
     {
         static void Main(string[] args)
         {

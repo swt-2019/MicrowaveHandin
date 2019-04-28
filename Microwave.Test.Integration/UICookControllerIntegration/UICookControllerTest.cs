@@ -61,14 +61,17 @@ namespace Microwave.Test.Integration.UICookControllerIntegration
 
             _startCancelButton.Press();
 
-            _fakeTimer.Received().Start(Arg.Is(timeButtonPressed));
+            _fakeTimer.Received().Start(Arg.Is(timeButtonPressed*60));
         }
 
+        [TestCase(1)]
         [TestCase(2)]
         [TestCase(5)]
         [TestCase(10)]
         public void UI_CookControllerStarted_PowerTubeReceivedCorrectValue(int powerButtonPressed)
         {
+            int expected = 100 - ((700 - powerButtonPressed * 50) / 700 * 100);
+            _powerButton.Press(); //Needs one press to adjust power
             for (int i = 0; i < powerButtonPressed; i++)
             {
                 _powerButton.Press();
@@ -77,7 +80,7 @@ namespace Microwave.Test.Integration.UICookControllerIntegration
 
             _startCancelButton.Press();
 
-            _fakePowerTube.Received().TurnOn(Arg.Is(powerButtonPressed*50));
+            _fakePowerTube.Received().TurnOn(Arg.Is(expected));
         }
 
         [Test]
