@@ -73,7 +73,7 @@ namespace Microwave.Test.Integration.UI_LightAndDisplay
         {
             door.Open();
             door.Close();
-            output.Received().OutputLine(Arg.Is<string>(str => str.Contains("off")));
+            output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("off")));
         }
 
         [Test]
@@ -84,7 +84,7 @@ namespace Microwave.Test.Integration.UI_LightAndDisplay
                 door.Open();
                 door.Close();
             }
-            output.Received().OutputLine(Arg.Is<string>(str => str.Contains("off")));
+            output.Received(100).OutputLine(Arg.Is<string>(str => str.Contains("off")));
         }
         
         [Test]
