@@ -69,7 +69,6 @@ namespace Microwave.Test.Integration.CookControllerPowerTubeIntegration
             Assert.DoesNotThrow(() =>_startCancelButton.Press());
         }
 
-        [Test]
         public void CookController_CookControllerStartedWithToHighPower_PowerTubeThrewException(int powerButtonPressed)
         {
             try
