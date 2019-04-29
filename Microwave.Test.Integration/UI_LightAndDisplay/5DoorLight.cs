@@ -52,12 +52,12 @@ namespace Microwave.Test.Integration.UI_LightAndDisplay
                 light,
                 cooker);
 
-            powerButtonTop.Pressed += new EventHandler(userInterface.OnPowerPressed);
+            /*powerButtonTop.Pressed += new EventHandler(userInterface.OnPowerPressed);
             timeButtonTop.Pressed += new EventHandler(userInterface.OnTimePressed);
-            startCancelButtonTop.Pressed += new EventHandler(userInterface.OnStartCancelPressed);
+            startCancelButtonTop.Pressed += new EventHandler(userInterface.OnStartCancelPressed);*/
 
-            door.Closed += new EventHandler(userInterface.OnDoorClosed);
-            door.Opened += new EventHandler(userInterface.OnDoorOpened);
+            /*door.Closed += new EventHandler(userInterface.OnDoorClosed);
+            door.Opened += new EventHandler(userInterface.OnDoorOpened);*/
 
         }
 
@@ -96,13 +96,13 @@ namespace Microwave.Test.Integration.UI_LightAndDisplay
                 // Now in SetPower
                 timeButtonTop.Press();
                 // Now in SetTime
-                startCancelButtonTop.Press();
+                startCancelButtonTop.Press(); // clear display
                 // Now in cooking
 
-                userInterface.CookingIsDone();
+                userInterface.CookingIsDone(); // clear display
             }
 
-            output.Received().OutputLine(Arg.Is<string>(str => str.Contains("off")));
+            output.Received(200).OutputLine(Arg.Is<string>(str => str.Contains("Display cleared")));
         }
 
         [Test]
@@ -112,13 +112,14 @@ namespace Microwave.Test.Integration.UI_LightAndDisplay
             // Now in SetPower
             timeButtonTop.Press();
             // Now in SetTime
-            startCancelButtonTop.Press();
+            startCancelButtonTop.Press();// clear display
             // Now in cooking
-
-            // Open door
+            
+            
             startCancelButtonTop.Press();
+            // stop cooking, clear display
 
-            output.Received().OutputLine(Arg.Is<string>(str => str.Contains("off")));
+            output.Received(2).OutputLine(Arg.Is<string>(str => str.Contains("Display cleared")));
         }
 
     }
