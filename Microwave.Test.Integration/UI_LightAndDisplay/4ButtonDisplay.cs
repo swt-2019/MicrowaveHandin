@@ -52,13 +52,6 @@ namespace Microwave.Test.Integration.UI_LightAndDisplay
                 light,
                 cooker);
 
-            /*powerButtonTop.Pressed += new EventHandler(userInterface.OnPowerPressed);
-            timeButtonTop.Pressed += new EventHandler(userInterface.OnTimePressed);
-            startCancelButtonTop.Pressed += new EventHandler(userInterface.OnStartCancelPressed);*/
-
-            /*door.Closed += new EventHandler(userInterface.OnDoorClosed);
-            door.Opened += new EventHandler(userInterface.OnDoorOpened);*/
-
         }
 
         [Test]
@@ -138,6 +131,30 @@ namespace Microwave.Test.Integration.UI_LightAndDisplay
             timeButtonTop.Press();
             startCancelButtonTop.Press();
             output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("Display cleared")));
+        }
+
+        [Test]
+        public void DisplayShowTimeWorksWithOutputAndPowerButton_TwoHundredSeconds()
+        {
+            powerButtonTop.Press();
+            display.ShowTime(200,00);
+            output.Received().OutputLine(Arg.Is<string>(str => str.Contains("200:00")));
+        }
+
+        [Test]
+        public void DisplayShowTimeWorksWithOutputAndPowerButton_OneSecond()
+        {
+            powerButtonTop.Press();
+            display.ShowTime(1, 00);
+            output.Received().OutputLine(Arg.Is<string>(str => str.Contains("01:00")));
+        }
+
+        [Test]
+        public void DisplayShowTimeWorksWithOutputAndPowerButton_NotReceivedOneSecond()
+        {
+            powerButtonTop.Press();
+            display.ShowTime(1, 00);
+            output.DidNotReceive().OutputLine(Arg.Is<string>(str => str.Contains("11:00")));
         }
 
     }

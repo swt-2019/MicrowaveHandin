@@ -52,13 +52,6 @@ namespace Microwave.Test.Integration.UI_LightAndDisplay
                 light,
                 cooker);
 
-            /*powerButtonTop.Pressed += new EventHandler(userInterface.OnPowerPressed);
-            timeButtonTop.Pressed += new EventHandler(userInterface.OnTimePressed);
-            startCancelButtonTop.Pressed += new EventHandler(userInterface.OnStartCancelPressed);*/
-
-            /*door.Closed += new EventHandler(userInterface.OnDoorClosed);
-            door.Opened += new EventHandler(userInterface.OnDoorOpened);*/
-
         }
 
         [Test]
