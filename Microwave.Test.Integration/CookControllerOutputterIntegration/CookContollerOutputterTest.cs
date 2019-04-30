@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Threading;
+using System.Threading.Tasks;
 using MicrowaveOvenClasses.Boundary;
 using MicrowaveOvenClasses.Controllers;
 using MicrowaveOvenClasses.Interfaces;
@@ -143,8 +144,10 @@ namespace Microwave.Test.Integration.CookControllerOutputterIntegration
                 _startCancelButton.Press();
                 
                 Console.SetOut(stringWriter);
-                
-                Thread.Sleep(60100);
+
+                Task.Delay(60100).Wait();
+
+                //Thread.Sleep(60100);
                 
                 Assert.True(stringWriter.ToString().Contains("Display cleared"));
             }
