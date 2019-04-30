@@ -66,7 +66,7 @@ namespace Microwave.Test.Integration.CookControllerOutputterIntegration
                 string expected = "";
                 for (int i = 0; i < times; i++)
                 {
-                    expected += $"Display shows: {(i+1)*50} W\n";
+                    expected += $"Display shows: {(i+1)*50} W\r\n";
                 }
 
 
@@ -90,9 +90,9 @@ namespace Microwave.Test.Integration.CookControllerOutputterIntegration
                 string expected = "";
                 for (int i = 1; i <= 14; i++)
                 {
-                    expected += $"Display shows: {(((i))*50)} W\n";
+                    expected += $"Display shows: {(((i))*50)} W\r\n";
                 }
-                expected += $"Display shows: 50 W\n";
+                expected += $"Display shows: 50 W\r\n";
 
 
                 for (int i = 0; i < numberOfPresses; i++)
@@ -114,10 +114,10 @@ namespace Microwave.Test.Integration.CookControllerOutputterIntegration
             using (StringWriter sw = new StringWriter())
             {
                 Console.SetOut(sw);
-                var expected = $"Display shows: 50 W\n";
+                var expected = $"Display shows: 50 W\r\n";
                 for (int c = 0; c < time; c++)
                 {
-                    expected += $"Display shows: {(c + 1):D2}:{0:D2}\n";
+                    expected += $"Display shows: {(c + 1):D2}:{0:D2}\r\n";
                 }
 
 
