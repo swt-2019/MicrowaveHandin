@@ -93,10 +93,8 @@ namespace Microwave.Test.Integration
             _timeButton.Press();
             _startCancelButton.Press();
             var secondsRemaining = 60 - duration;
-
-            Task.Delay((duration * 1000) + 400).Wait();
-
-            //Thread.Sleep((duration*1000) + 400);
+            
+            Thread.Sleep((duration*1000) + 400);
 
             _fakeOutput.Received().OutputLine($"Display shows: {0:D2}:{secondsRemaining:D2}");
         }
