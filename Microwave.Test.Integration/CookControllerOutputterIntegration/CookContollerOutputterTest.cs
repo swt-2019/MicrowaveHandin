@@ -145,7 +145,7 @@ namespace Microwave.Test.Integration.CookControllerOutputterIntegration
                 
                 Console.SetOut(stringWriter);
 
-                Thread.Sleep(60100);
+                Thread.Sleep(61000);
                 
                 Assert.True(stringWriter.ToString().Contains("Display cleared"));
             }
