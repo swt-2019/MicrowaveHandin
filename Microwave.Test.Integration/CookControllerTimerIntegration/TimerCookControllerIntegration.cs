@@ -1,4 +1,5 @@
 using System.Threading;
+using System.Threading.Tasks;
 using MicrowaveOvenClasses.Boundary;
 using MicrowaveOvenClasses.Controllers;
 using MicrowaveOvenClasses.Interfaces;
@@ -92,9 +93,11 @@ namespace Microwave.Test.Integration
             _timeButton.Press();
             _startCancelButton.Press();
             var secondsRemaining = 60 - duration;
-            
-            Thread.Sleep((duration*1000) + 400);
-            
+
+            Task.Delay((duration * 1000) + 400).Wait();
+
+            //Thread.Sleep((duration*1000) + 400);
+
             _fakeOutput.Received().OutputLine($"Display shows: {0:D2}:{secondsRemaining:D2}");
         }
         
