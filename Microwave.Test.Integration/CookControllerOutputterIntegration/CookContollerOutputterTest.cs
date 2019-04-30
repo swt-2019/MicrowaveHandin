@@ -144,7 +144,7 @@ namespace Microwave.Test.Integration.CookControllerOutputterIntegration
                 
                 Console.SetOut(stringWriter);
                 
-                Thread.Sleep(60050);
+                Thread.Sleep(60100);
                 
                 Assert.True(stringWriter.ToString().Contains("Display cleared"));
             }
@@ -161,7 +161,7 @@ namespace Microwave.Test.Integration.CookControllerOutputterIntegration
                 _powerButton.Press();
                 _timeButton.Press();
                 _startCancelButton.Press();
-                Thread.Sleep(1010);
+                Thread.Sleep(1100);
 
                 Assert.True(stringWriter.ToString().Contains("Light is turned on"));
             }

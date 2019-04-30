@@ -76,7 +76,7 @@ namespace Microwave.Test.Integration
             _timeButton.Press();
             _startCancelButton.Press();
             
-            Thread.Sleep(60050);
+            Thread.Sleep(60400);
             
             Assert.IsTrue(isDone);
             
@@ -91,7 +91,7 @@ namespace Microwave.Test.Integration
             
             _topCookController.StartCooking(10,customTime);
             
-            Thread.Sleep((customTime * 1000) + 10);
+            Thread.Sleep((customTime * 1000) + 100);
             
             Assert.IsTrue(isDone);
               
