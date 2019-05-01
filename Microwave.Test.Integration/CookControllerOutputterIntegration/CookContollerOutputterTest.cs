@@ -11,7 +11,7 @@ using Timer = MicrowaveOvenClasses.Boundary.Timer;
 
 namespace Microwave.Test.Integration.CookControllerOutputterIntegration
 {
-    public class CookContollerOutputterTest
+    public class CookContollerOutputterTests
     {
         private UserInterface _userInterface;
         private IDoor _door;
@@ -25,7 +25,7 @@ namespace Microwave.Test.Integration.CookControllerOutputterIntegration
         private ITimer _timer;
         private IPowerTube _powerTube;
 
-
+        
         [SetUp]
         public void IntegrationTestSetup()
         {
